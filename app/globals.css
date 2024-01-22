@@ -25,3 +25,72 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.spacePicBG{
+  background-image: url('../public/solarSystemImages/planetDescBG.jpg');
+  opacity: 0.9;
+}
+
+.nootchedCorners::before{
+  clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+  -webkit-clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+  background:black;
+  inset: 5px;
+  position: absolute;
+  margin: 3px;
+  z-index: 2;
+  z-index: 0.2;
+  content: "";
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.nootchedCorners{
+  position: absolute;
+  z-index: 1;
+  clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+  -webkit-clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+  background: #002638;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.nootchedCornersButtons{
+  position: absolute;
+  z-index: 1;
+  clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%);
+  -webkit-clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%);
+  background: #002638;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.nootchedCornersButtons::before{
+  clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%);
+  -webkit-clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%);
+  background:black;
+  inset: 5px;
+  position: absolute;
+  margin: 3px;
+  z-index: 2;
+  z-index: 0.2;
+  content: "";
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+
+
+
+
+
+
+
