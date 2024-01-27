@@ -1,11 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { render } from "react-dom"
 import { AmbientLight, BoxGeometry, Camera, DirectionalLight, Mesh, MeshBasicMaterial, MeshPhongMaterial, MeshStandardMaterial, PerspectiveCamera, PointLight, Raycaster, Scene, ShaderMaterial, SphereGeometry, TextureLoader, Uniform, Vector2, WebGLRenderer } from "three"
-import Planet from "./sun/planet"
+import Planet from "./sun/sun3DComponet"
 import SunInfoList from "./sun/sunInfoList"
 import { wind } from "fontawesome"
+import Sun from "./sun/sun"
+import Earth from "./earth/earth"
 const planetAngles = Array(9).fill(0)
 const planetsSpeedAroundSun = [0, 4.787, 3.502, 2.987, 2.408, 1.307, 0.968, 0.681, 0.543]
 const planetsSpeedAroundItSelves = [0, 58.6, 243, 1, 1.03, 9.9, 10.7, 17.2, 16.1]
@@ -18,8 +20,7 @@ var clickedPlanetMaterial = null //planet clicked by the user to see its informa
 export default function Page(){
     
     const [day, setDay] = useState(0)
-    const [opennedPlanetDescription, setOpennedPlanetDescription] = useState(false)
-    
+    const [opennedPlanetDescription, setOpennedPlanetDescription] = useState(-1)//corresspands to the planet that will be openned to check about its description
     const mousePosition = new Vector2()
     const raycaster = new Raycaster()
     const canvasRef = useRef(null)
@@ -55,7 +56,48 @@ export default function Page(){
                                     uranus: new Mesh(new SphereGeometry(15.362), new MeshStandardMaterial({map: uranusTexture})),
                                         neptune: new Mesh(new SphereGeometry(12.622), new MeshStandardMaterial({map: neptuneTexture})),
     }
-    const viewSpaceEvent = new CustomEvent("viewSpaceClicked", {detail: solarSystem['sun']})
+    const viewSpaceEvent = new CustomEvent("viewSpaceClicked", {detail: solarSystem['sun'], bubbles: true})
+    
+    const unhideSun = useCallback(event => {
+        
+        solarSystem['sun'].visible = true
+
+    })
+
+    const unhideEarth = useCallback(event => {
+        
+        solarSystem['earth'].visible = true
+
+    })
+
+    const checkPlanetInfo = useCallback( event => {
+
+        mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1
+        mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1
+                
+        raycaster.setFromCamera(mousePosition, camera)
+
+        const intersectedObjects = raycaster.intersectObjects(scene.children)
+        const solarSystemPlanets = Object.values(solarSystem)
+        const selectedPlannet = intersectedObjects.find((intersectedObject) => solarSystemPlanets.includes(intersectedObject.object))
+        
+        if(selectedPlannet != undefined){
+
+            switch(selectedPlannet.object){
+
+                case solarSystem["sun"] : {
+                    solarSystem['sun'].visible = false
+                    setOpennedPlanetDescription(0)
+                    break;
+                }
+                case solarSystem["earth"] : {
+                    solarSystem['earth'].visible = false
+                    setOpennedPlanetDescription(1)
+                    break;
+                }
+            }
+        }
+    })
 
     solarSystem["sun"].position.set(0, 0, 0)
     solarSystem["mercury"].position.set(39, 0, 0)
@@ -73,8 +115,6 @@ export default function Page(){
 
     scene.add(sunLight)
     
-    
-
     useEffect(() => {
 
         if(canvasRef.current){
@@ -146,37 +186,17 @@ export default function Page(){
 
         if(typeof window !== 'undefined'){
 
-            console.log('addition done')
-            window.addEventListener("viewSpaceClicked", event => {
-                console.log(event)
-                event.detail.visible = true
-            })
-
-            window.addEventListener('click', event => {
-                mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1
-                mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1
-
-                raycaster.setFromCamera(mousePosition, camera)
-                const intersectedObjects = raycaster.intersectObjects(scene.children)
-
-                const solarSystemPlanets = Object.values(solarSystem)
-
-                const selectedPlannet = intersectedObjects.find((intersectedObject) => solarSystemPlanets.includes(intersectedObject.object))
-                
-                if(selectedPlannet != undefined){
-                    switch(selectedPlannet.object){
-                        case solarSystem["sun"] : {
-                            clickedPlanetMaterial = new MeshBasicMaterial({map: sunTexture})
-                            solarSystem['sun'].visible = false
-                        }
-
-                    }
-
-                    setOpennedPlanetDescription(true)
-                }
-            })
+            window.addEventListener("viewSpaceClicked", unhideSun)
+            window.addEventListener("viewSpaceClicked", unhideEarth)
+            window.addEventListener('click', checkPlanetInfo)
         
             
+        }
+
+        return () => {
+            window.removeEventListener('click', checkPlanetInfo)
+            window.removeEventListener("viewSpaceClicked", unhideEarth)
+            window.removeEventListener("viewSpaceClicked", unhideSun)
         }
     }, [])
 
@@ -190,22 +210,16 @@ export default function Page(){
                     }
                 </div>
                 <div className="">""</div>
-                <div className="flex space-x-[5px] cursor-pointer">
+                <div className="flex space-x-[5px] cursor-pointer" onClick={() => solarSystem['sun'].visible = !solarSystem['sun'].visible}>
                     {
                         day % 365
                     }
                 </div>
             </div>
             {
-                opennedPlanetDescription ?
-                    <div className="absolute z-50 top-0 right-0 left-0 bottom-0 flex items-center justify-center">
-                        <div className="flex space-x-[30px] w-[80%] h-[80vh]">
-                            <div className="basis-[60%] flex justify-center items-center">
-                                <Planet planetMaterial={clickedPlanetMaterial} /> 
-                            </div>
-                            <SunInfoList viewSpaceEvent={viewSpaceEvent} parentElementStyle={"basis-[40%] relative"} />
-                        </div>
-                    </div> : null
+                opennedPlanetDescription == 0 ?
+                    <Sun viewSpaceEvent={viewSpaceEvent} setOpennedPlanetDescription={setOpennedPlanetDescription} />: opennedPlanetDescription == 1 ?
+                        <Earth viewSpaceEvent={viewSpaceEvent} setOpennedPlanetDescription={setOpennedPlanetDescription} /> : null
             }
         </div>
     )

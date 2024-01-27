@@ -31,6 +31,11 @@ body {
   opacity: 0.9;
 }
 
+.simpleNootchedCorners{
+  clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+  -webkit-clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
+}
+
 .nootchedCorners::before{
   clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
   -webkit-clip-path: polygon(7% 0, 93% 0, 100% 7%, 100% 93%, 93% 100%, 7% 100%, 0 93%, 0 7%);
@@ -85,6 +90,53 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
+}
+
+
+.nootchedCornersIcons{
+  position: absolute;
+  z-index: 1;
+  clip-path: polygon(30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%, 0 20%);
+  -webkit-clip-path: polygon(30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%, 0 20%);
+  background: #002638;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.nootchedCornersIcons::before{
+  clip-path: polygon(30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%, 0 20%);
+  -webkit-clip-path: polygon(30% 0, 70% 0, 100% 20%, 100% 80%, 70% 100%, 30% 100%, 0 80%, 0 20%);
+  background:black;
+  inset: 5px;
+  position: absolute;
+  margin: 3px;
+  z-index: 2;
+  z-index: 0.2;
+  content: "";
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.sunInfoScrollBar{
+  scrollbar-width: thin;
+  scrollbar-color: #002638;
+}
+
+.sunInfoScrollBar{
+  
+  ::-webkit-scrollbar{
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background-color: #002638;
+    border-radius: 20px;
+  }
+
 }
 
 

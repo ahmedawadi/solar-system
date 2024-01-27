@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect } from 'react';
 import { render } from 'react-dom';
 import { BoxGeometry, Camera, CapsuleGeometry, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, SphereGeometry, TextureLoader, WebGLRenderer } from 'three'
-import Planet from './solar-system/sun/planet';
+import Planet from './solar-system/sun/sun3DComponet';
 
 export default function Home() {
 

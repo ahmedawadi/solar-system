@@ -5,7 +5,7 @@ import vertexShader from './vertexShader.glsl'
 import { render } from "react-dom";
 import { BoxGeometry, CapsuleGeometry, Clock, Color, Mesh, MeshBasicMaterial, MeshPhysicalMaterial, MeshStandardMaterial, PerspectiveCamera, PointLight, Scene, ShaderMaterial, SphereGeometry, TextureLoader, WebGLRenderer } from "three";
 
-export default function Planet({}){
+export default function Sun3DDisplay({}){
 
     const sunTexture = new TextureLoader().load("solarSystemImages/sun.jpg")
     const uniforms = {
